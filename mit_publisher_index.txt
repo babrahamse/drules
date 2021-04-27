@@ -1,0 +1,103 @@
+rule "preliminaries"
+when
+     (TRUE)
+then
+    # create publisher index local field 961
+    # last updated Apr. 26, 2021
+    # ©2021 MIT Libraries
+end
+
+rule "add coded place of publication"
+when
+    (TRUE)
+then
+    copyControlField "008" to "009"
+    replaceControlContents "009.{0,15}" with " "
+    replaceControlContents "009.{4,22}" with " "
+    copyField "009" to "961.a"
+    removeControlField "009"
+
+    # put all into a single field
+    combineFields "961" excluding ""
+
+end 
+
+
+rule "add date from fixed field, single date"
+when 
+    (existsControl "008.{6,1}.s")
+    OR  (existsControl "008.{6,1}.c")
+then
+    copyControlField "008" to "009"
+    replaceControlContents "009.{0,7}" with " "
+    replaceControlContents "009.{5,29}" with " "
+    copyField "009" to "961.a"
+    removeControlField "009"
+
+    # put all into a single field
+    combineFields "961" excluding ""
+end
+
+rule "add date from fixed field, multiple dates"
+when 
+    (existsControl "008.{6,1}.d")
+    OR (existsControl "008.{6,1}.i")
+    OR (existsControl "008.{6,1}.k")
+    OR (existsControl "008.{6,1}.m")
+    OR (existsControl "008.{6,1}.p")
+    OR (existsControl "008.{6,1}.r")
+    OR (existsControl "008.{6,1}.t")
+
+then
+    copyControlField "008" to "009"
+    replaceControlContents "009.{0,7}" with " "
+    replaceControlContents "009.{5,29}" with " "
+    copyField "009" to "961.a"
+    removeControlField "009"
+    
+    copyControlField "008" to "009"
+    replaceControlContents "009.{0,11}" with " "
+    replaceControlContents "009.{5,25}" with " "
+    copyField "009" to "901.a"
+    # suffix "961.a" with ", "
+    suffixSubField "961.a" with "901.a"
+    removeControlField "009"
+    removeField "901"
+
+    # put all into a single field
+    combineFields "961" excluding ""
+end
+
+rule "add pub. details from 260"
+when
+    (exists "260")
+then
+    addField "901"
+    copyField "260.a" to "901.a"
+    suffix "901.a" with " "
+    suffixSubField "901.a" with "260.b"
+    suffix "901.a" with " "
+    suffixSubField "901.a" with "260.e"
+    suffix "901.a" with " "
+    suffixSubField "901.a" with "260.f"
+
+    copyField "901.a" to "961.a"
+    removeField "901"
+    # put all into a single field
+    combineFields "961" excluding ""
+end
+
+rule "add pub details from 264"
+when
+    (exists "264")
+then
+    addField "901"
+    copyField "264.a" to "901.a"
+    suffix "901.a" with " "
+    suffixSubField "901.a" with "264.b"
+
+    copyField "901.a" to "961.a"
+    removeField "901"
+    # put all into a single field
+    combineFields "961" excluding ""
+end

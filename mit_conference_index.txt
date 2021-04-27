@@ -1,0 +1,337 @@
+rule "preliminaries"
+    when
+        (TRUE)
+    then
+        # generate conference index
+        # harvests data from access points (11x, 7xx) to populate a local field 960
+        # for primo index
+        # last updated 2021-04-27
+        # ©2021 MIT Libraries
+end
+
+rule "monographs--conference as subordinate body added entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # monographs
+        (existsControl "LDR.{07,1}.m")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # corporate body added entry
+        (exists "710.c")
+    then
+        copyField "710" to "903" if (exists "710.c")
+        # exclude 710s that lack place of conference
+        copyField "903.a" to "904.a"
+
+        # copy 710 to temp field
+        suffixSubField "904.a" with "903.b"
+        suffixSubField "904.a" with "903.n"
+        suffixSubField "904.a" with "903.d"
+        suffixSubField "904.a" with "903.c"
+
+        # remove punctuation
+        replaceContents "904.a.\\." with " "
+        replaceContents "904.a.," with " "
+        replaceContents "904.a.(" with " "
+        replaceContents "904.a.)" with " "
+        replaceContents "904.a.:" with " "
+        replaceContents "904.a.  " with " "
+        replaceContents "904.a.  " with " "
+
+        copyField "904.a" to "960.a"
+        removeField "903"
+        removeField "904"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+
+
+end
+
+rule "monographs--conference as subordinate body main entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # monographs
+        (existsControl "LDR.{07,1}.m")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # corporate body added entry
+        (exists "110.c")
+    then
+        copyField "110.a" to "903.a"
+        # exclude 110s that lack place of conference
+
+        # copy 110 to temp field
+        suffixSubField "903.a" with "110.b"
+        suffixSubField "903.a" with "110.n"
+        suffixSubField "903.a" with "110.d"
+        suffixSubField "903.a" with "110.c"
+
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "monographs--conference added entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # monographs
+        (existsControl "LDR.{07,1}.m")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # conference added entry
+        (exists "711")
+    then
+        copyField "711.a" to "903.a"
+
+        # copy 710 to temp field
+        suffixSubField "903.a" with "711.b"
+        suffixSubField "903.a" with "711.n"
+        suffixSubField "903.a" with "711.d"
+        suffixSubField "903.a" with "711.c"
+
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "monographs--conference main entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # monographs
+        (existsControl "LDR.{07,1}.m")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # conference main entry
+        (exists "111")
+    then
+        copyField "111.a" to "903.a"
+
+        # copy 111 to temp field
+        suffixSubField "903.a" with "111.b"
+        suffixSubField "903.a" with "111.n"
+        suffixSubField "903.a" with "111.d"
+        suffixSubField "903.a" with "111.c"
+
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "serials--conference main entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # serials
+        (existsControl "LDR.{07,1}.s")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # conference main entry
+        (exists "111")
+    then
+        copyField "111.a" to "903.a"
+        
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "serials--conference added entry"
+    when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # serials
+        (existsControl "LDR.{07,1}.s")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # conference added entry
+        (exists "711")
+    then
+        copyField "711.a" to "903.a"
+        
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+
+rule "serials--corp body main entry plus title"
+when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # serials
+        (existsControl "LDR.{07,1}.s")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # conference main entry
+        (exists "110")
+    then
+        copyField "110.a" to "903.a"
+        suffixSubField "903.a" with "245.a"
+        
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a./" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "serials--corp. body added entry plus title"
+when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # serials
+        (existsControl "LDR.{07,1}.s")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # corp. body added entry
+        (exists "710")
+    then
+        copyField "710.a" to "903.a"
+        suffixSubField "903.a" with "245.a"
+        
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a./" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+
+rule "serials--title only"
+when
+        # language material only
+        (existsControl "LDR.{06,1}.a")
+    AND
+        # serials
+        (existsControl "LDR.{07,1}.s")
+    AND
+        # conference publication
+        (existsControl "008.{29,1}.1")
+    AND
+        # corp. body added entry
+        (not exists "11*")
+    AND
+       (not exists "71*")
+    then
+        copyField "245.a" to "903.a"
+        
+        # remove punctuation
+        replaceContents "903.a.\\." with " "
+        replaceContents "903.a.," with " "
+        replaceContents "903.a.(" with " "
+        replaceContents "903.a.)" with " "
+        replaceContents "903.a./" with " "
+        replaceContents "903.a.:" with " "
+        replaceContents "903.a.  " with " "
+        replaceContents "903.a.  " with " "
+
+        copyField "903.a" to "960.a"
+        removeField "903"
+
+        # put all into a single 960 field
+        combineFields "960" excluding ""
+end
+

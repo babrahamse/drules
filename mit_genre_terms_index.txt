@@ -1,0 +1,159 @@
+rule "preliminaries"
+when
+(TRUE)
+then
+# generate genre term index
+# last udpated 2021-04-27
+# ©2021 MIT Libraries
+end
+
+rule "harvest genre terms"
+when
+     (TRUE)
+then
+     copyField "655.a" to "901.a" if(exists "655.{*,0}")
+     copyField "655.a" to "901.a" if(exists "655.{*,7}")
+     
+    replaceContents "901.a.\\." with " "
+    replaceContents "901.a.," with " "
+    replaceContents "901.a.(" with " "
+    replaceContents "901.a.)" with " "
+    replaceContents "901.a.:" with " "
+    replaceContents "901.a.;" with " "
+    replaceContents "901.a.  " with " "
+    replaceContents "901.a.  " with " "
+
+     copyField "901.a" to "965.a"
+     removeField "901"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/07--bib level, mono"
+when
+     (existsControl "LDR.{7,1}.m")
+     OR (existsControl "LDR.{7,1}.a")
+     OR (existsControl "LDR.{7,1}.d")
+then
+    addField "965.a.Monograph"
+end
+
+rule "harvest LDR/07--bib level, serial"
+when
+     (existsControl "LDR.{7,1}.s")
+then
+    addField "965.a.Serial"
+end
+
+rule "harvest LDR/07--bib level, IR"
+when
+     (existsControl "LDR.{7,1}.i")
+then
+    addField "965.a.Integrating resource"
+end
+
+rule "harvest LDR/07--bib level, collection"
+when
+     (existsControl "LDR.{7,1}.i")
+then
+    addField "965.a.Collection"
+end
+
+rule "harvest LDR/06 -- text"
+when
+     (existsControl "LDR.{6,1}.a")
+     OR (existsControl "LDR.{6,1}.t")
+then
+     addField "965.a.Text"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- notated music"
+when
+     (existsControl "LDR.{6,1}.c")
+     OR (existsControl "LDR.{6,1}.d")
+then
+     addField "965.a.Score"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- cartographic"
+when
+     (existsControl "LDR.{6,1}.e")
+     OR (existsControl "LDR.{6,1}.f")
+then
+     addField "965.a.Map"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- projected"
+when
+     (existsControl "LDR.{6,1}.g")
+then
+     addField "965.a.Projected"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- sound recording"
+when
+     (existsControl "LDR.{6,1}.i")
+     OR (existsControl "LDR.{6,1}.j")    
+then
+     addField "965.a.Recording"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- graphic image"
+when
+     (existsControl "LDR.{6,1}.k")
+then
+     addField "965.a.Image"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- computer file"
+when
+     (existsControl "LDR.{6,1}.m")
+then
+     addField "965.a.Computer file"
+     combineFields "965" excluding ""
+end
+
+rule "harvest LDR/06 -- object"
+when
+     (existsControl "LDR.{6,1}.o")
+     OR (existsControl "LDR.{6,1}.p")
+     OR (existsControl "LDR.{6,1}.r")
+then
+     addField "965.a.Object"
+     combineFields "965" excluding ""
+end
+
+rule "harvest 008/33 lit form, texts only, fiction"
+when
+     (existsControl "LDR.{6,1}.a")
+     AND (existsControl "LDR.{7,1}.m")
+     AND (existsControl "008.{33,1}.1")
+then
+     addField "965.a.Fiction"
+     combineFields "965" excluding ""
+end
+    
+rule "harvest 008/33 lit form, texts only, drama"
+when
+     (existsControl "LDR.{6,1}.a")
+     AND (existsControl "LDR.{7,1}.m")
+     AND (existsControl "008.{33,1}.d")
+then
+     addField "965.a.Drama"
+     combineFields "965" excluding ""
+end
+
+rule "harvest 008/33 lit form, texts only, poetry"
+when
+     (existsControl "LDR.{6,1}.a")
+     AND (existsControl "LDR.{7,1}.m")
+     AND (existsControl "008.{33,1}.p")
+then
+     addField "965.a.Poetry"
+     combineFields "965" excluding ""
+end

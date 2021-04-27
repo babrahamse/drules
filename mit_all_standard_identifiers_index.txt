@@ -1,0 +1,149 @@
+rule "preliminaries"
+when
+    (TRUE)
+then
+    # generate all standard identifiers index
+    # harvests standard identifiers from various places in the MARC record
+    # and puts them into local field 969
+    # last updated 2021-04-27
+    # ©2021 MIT Libraries
+end
+
+rule "isbn"
+when
+(exists "020.a")
+then
+copyField "020.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "isbn-err"
+when
+(exists "020.z")
+then
+copyField "020.z" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "issn"
+when
+(exists "022.a")
+then
+copyField "022.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "issn-link"
+when
+(exists "022.l")
+then
+copyField "022.l" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "issn-err"
+when
+(exists "022.z")
+then
+copyField "022.z" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "othersid"
+when
+(exists "024.a")
+then
+copyField "024.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "lccn"
+when
+(exists "010.a")
+then
+copyField "010.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "oclc record identifier"
+when
+(exists "035.a")
+then
+copyField "035.a" to "969.a" if(exists "035.a.(OCoLC)*")
+replaceContents "969.a.(OCoLC)" with ""
+combineFields "969" excluding ""
+end
+
+rule "oclc-err"
+when
+(exists "019.a")
+then
+copyField "019.a" to "969.a"
+replaceContents "969.a.(OCoLC)" with ""
+combineFields "969" excluding ""
+end
+
+
+rule "isrn"
+when
+(exists "027.a")
+then
+copyField "027.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "isrn-err"
+when
+(exists "027.z")
+then
+copyField "027.z" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "coden"
+when
+(exists "030.a")
+then
+copyField "030.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "coden-err"
+when
+(exists "030.z")
+then
+copyField "030.z" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "lc-class"
+when
+(exists "050.a")
+then
+copyField "050.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "nlm-class"
+when
+(exists "060.a")
+then
+copyField "060.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "udc-class"
+when
+(exists "080.a")
+then
+copyField "080.a" to "969.a"
+combineFields "969" excluding ""
+end
+
+rule "dewey-class"
+when
+(exists "082.a")
+then
+copyField "082.a" to "969.a"
+combineFields "969" excluding ""
+end
